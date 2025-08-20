@@ -1,0 +1,152 @@
+/* popup.css */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    width: 350px; /* Increased width for more space */
+    background-color: #f8fafc;
+    margin: 0;
+    padding: 16px;
+    color: #1e293b;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.logo {
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    color: #0f172a;
+}
+
+.tagline {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0 0 16px 0;
+    text-align: center;
+}
+
+.tab-list-container {
+    width: 100%;
+    max-height: 200px; /* Limit height and allow scrolling */
+    overflow-y: auto;
+    margin-bottom: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.tab-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+}
+.tab-item:last-child {
+    border-bottom: none;
+}
+.tab-item:hover {
+    background-color: #f8fafc;
+}
+.tab-item input[type="checkbox"] {
+    margin-right: 12px;
+    accent-color: #10B981;
+}
+.tab-item .favicon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+}
+.tab-item label {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    cursor: pointer;
+}
+
+.button-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    background-color: #10B981; /* Emerald green */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.button-primary:hover {
+    background-color: #059669;
+}
+.button-primary svg {
+    margin-right: 8px;
+}
+
+.result-container {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+}
+.result-container p {
+    font-size: 14px;
+    margin: 0 0 10px 0;
+    font-weight: 500;
+}
+
+.link-wrapper {
+    display: flex;
+    align-items: center;
+}
+#linkOutput {
+    flex-grow: 1;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: #f1f5f9;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#copyBtn {
+    margin-left: 8px;
+    padding: 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background-color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#copyBtn:hover {
+    background-color: #f8fafc;
+}
+
+.hidden {
+    display: none;
+}
