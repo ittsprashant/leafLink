@@ -1,9 +1,10 @@
 /* viewer.js */
 document.addEventListener('DOMContentLoaded', () => {
+    // --- UPDATED: Get the new title element ---
+    const pageTitle = document.getElementById('pageTitle');
     const linkList = document.getElementById('linkList');
     const linkCount = document.getElementById('linkCount');
 
-    // 1. Get the encoded data from the URL hash.
     const encodedData = window.location.hash.substring(1);
 
     if (!encodedData) {
@@ -12,18 +13,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-        // 2. Decode the Base64 string back to a JSON string.
         const jsonString = atob(encodedData);
+        // --- UPDATED: Parse the parent object ---
+        const data = JSON.parse(jsonString);
+        
+        const pageTitleText = data.title || "Your LinkLeaf";
+        const tabData = data.tabs || [];
 
-        // 3. Parse the JSON string into an array of objects.
-        const tabData = JSON.parse(jsonString);
+        // --- NEW: Set the page title ---
+        pageTitle.textContent = pageTitleText;
+        document.title = pageTitleText; // Also set the browser tab title
 
         linkCount.textContent = `${tabData.length} tabs bundled in this Leaf.`;
 
-        // 4. Loop through the data and create the HTML for each link.
         tabData.forEach(tab => {
             const listItem = document.createElement('li');
-            
             const fallbackIcon = '[https://placehold.co/20x20/f1f5f9/64748b?text=L](https://placehold.co/20x20/f1f5f9/64748b?text=L)';
 
             listItem.innerHTML = `
@@ -39,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     } catch (error) {
-        console.error("Error decoding or parsing tab data:", error);
+        console.error("Error decoding or parsing data:", error);
         linkCount.textContent = "Could not load the links in this Leaf. The data may be corrupted.";
     }
 });

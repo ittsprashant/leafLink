@@ -12,19 +12,37 @@
             <img src="icons/icon48.png" alt="LinkLeaf Icon" class="logo">
             <h1>LinkLeaf</h1>
         </div>
-        <p class="tagline">Select the tabs you want to share.</p>
+        
+        <div class="title-container">
+            <label for="linkleafTitle">Title:</label>
+            <input type="text" id="linkleafTitle" placeholder="Project Phoenix Research">
+        </div>
+
+        <div class="controls">
+            <p class="tagline">Select the tabs you want to share:</p>
+
+            <!-- --- UPDATED: Replaced buttons with a single checkbox --- -->
+            <div class="select-all-container">
+                <input type="checkbox" id="selectAllCheckbox" checked>
+                <label for="selectAllCheckbox">Select All</label>
+            </div>
+
+        </div>
+
+        
         
         <div id="tabList" class="tab-list-container">
             <!-- Tabs will be dynamically inserted here -->
         </div>
 
         <button id="createLinkBtn" class="button-primary">
-            <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
-            <span>Create LinkLeaf from Selected</span>
+            <svg id="createIcon" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
+            <svg id="copiedIcon" class="hidden" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span id="createBtnText">Create & Copy Link</span>
         </button>
 
         <div id="result" class="result-container hidden">
-            <p>Your LinkLeaf is ready:</p>
+            <p>Link copied! You can also copy it again here:</p>
             <div class="link-wrapper">
                 <input type="text" id="linkOutput" readonly>
                 <button id="copyBtn" title="Copy to clipboard">

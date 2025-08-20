@@ -1,5 +1,8 @@
 /* popup.js */
 document.addEventListener('DOMContentLoaded', async () => {
+    const linkleafTitleInput = document.getElementById('linkleafTitle');
+    // --- UPDATED: Get the new checkbox instead of buttons ---
+    const selectAllCheckbox = document.getElementById('selectAllCheckbox');
     const createLinkBtn = document.getElementById('createLinkBtn');
     const resultDiv = document.getElementById('result');
     const linkOutput = document.getElementById('linkOutput');
@@ -7,8 +10,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const copyIcon = document.getElementById('copyIcon');
     const checkIcon = document.getElementById('checkIcon');
     const tabListContainer = document.getElementById('tabList');
+    const createBtnText = document.getElementById('createBtnText');
+    const createIcon = document.getElementById('createIcon');
+    const copiedIcon = document.getElementById('copiedIcon');
 
-    // --- NEW: Function to load and display tabs ---
+    // --- NEW: Function to update the main checkbox based on children ---
+    function updateSelectAllCheckboxState() {
+        const allTabCheckboxes = document.querySelectorAll('.tab-checkbox');
+        // Check if every single tab checkbox is checked
+        const allChecked = [...allTabCheckboxes].every(checkbox => checkbox.checked);
+        selectAllCheckbox.checked = allChecked;
+    }
+
     async function loadTabs() {
         const tabs = await chrome.tabs.query({ currentWindow: true });
         const filteredTabs = tabs.filter(tab => tab.url && !tab.url.startsWith('chrome://'));
@@ -17,7 +30,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const tabElement = document.createElement('div');
             tabElement.className = 'tab-item';
             
-            // Store tab data directly on the element for easy access later
             tabElement.dataset.title = tab.title;
             tabElement.dataset.url = tab.url;
             tabElement.dataset.favIconUrl = tab.favIconUrl || '';
@@ -31,17 +43,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             `;
             tabListContainer.appendChild(tabElement);
         });
+        // After loading, ensure the "Select All" checkbox is correctly set (it should be checked)
+        updateSelectAllCheckboxState();
     }
 
-    // Load tabs as soon as the popup opens
     loadTabs();
 
-    // --- UPDATED: Event listener for the create button ---
+    // --- NEW: Event listener for the main "Select All" checkbox ---
+    selectAllCheckbox.addEventListener('change', () => {
+        const isChecked = selectAllCheckbox.checked;
+        document.querySelectorAll('.tab-checkbox').forEach(checkbox => checkbox.checked = isChecked);
+    });
+
+    // --- NEW: Delegated event listener for individual tab checkboxes ---
+    tabListContainer.addEventListener('change', (event) => {
+        if (event.target.classList.contains('tab-checkbox')) {
+            updateSelectAllCheckboxState();
+        }
+    });
+
     createLinkBtn.addEventListener('click', () => {
         const selectedTabsData = [];
         const checkedBoxes = document.querySelectorAll('.tab-checkbox:checked');
+        const title = linkleafTitleInput.value.trim() || "My LinkLeaf";
 
-        // 1. Get data only from the checked tabs.
         checkedBoxes.forEach(checkbox => {
             const parent = checkbox.closest('.tab-item');
             if (parent) {
@@ -54,33 +79,42 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (selectedTabsData.length === 0) {
-            // Optional: handle case where no tabs are selected
-            alert("Please select at least one tab to create a LinkLeaf.");
+            alert("Please select at least one tab.");
             return;
         }
 
-        // 2. Convert the selected tab data to a JSON string.
-        const jsonString = JSON.stringify(selectedTabsData);
-
-        // 3. Encode the JSON string into Base64 to make it URL-safe.
+        const dataToEncode = { title: title, tabs: selectedTabsData };
+        const jsonString = JSON.stringify(dataToEncode);
         const encodedData = btoa(jsonString);
-
-        // 4. Get the URL for our local viewer.html file.
-        const viewerUrl = chrome.runtime.getURL('viewer.html');
-
-        // 5. Construct the final, shareable URL.
+        // const viewerUrl = chrome.runtime.getURL('viewer.html');
+        const viewerUrl = `https://linkleaf.netlify.app/`;
         const finalUrl = `${viewerUrl}#${encodedData}`;
 
-        // 6. Display the result to the user.
         linkOutput.value = finalUrl;
         resultDiv.classList.remove('hidden');
+
+        linkOutput.select();
+        document.execCommand('copy');
+        
+        createBtnText.textContent = "Copied!";
+        createIcon.classList.add('hidden');
+        copiedIcon.classList.remove('hidden');
+        createLinkBtn.classList.add('copied');
+
+        setTimeout(() => {
+            createBtnText.textContent = "Create & Copy Link";
+            createIcon.classList.remove('hidden');
+            copiedIcon.classList.add('hidden');
+            createLinkBtn.classList.remove('copied');
+        }, 2000);
+
+        copyIcon.classList.add('hidden');
+        checkIcon.classList.remove('hidden');
     });
 
     copyBtn.addEventListener('click', () => {
         linkOutput.select();
         document.execCommand('copy');
-
-        // Visual feedback for the user
         copyIcon.classList.add('hidden');
         checkIcon.classList.remove('hidden');
         setTimeout(() => {
