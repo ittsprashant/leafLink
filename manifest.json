@@ -4,8 +4,7 @@
     "version": "1.0",
     "description": "Bundle all your open tabs into a single, shareable link.",
     "permissions": [
-      "tabs",
-      "storage"
+      "tabs"
     ],
     "action": {
       "default_popup": "popup.html",
