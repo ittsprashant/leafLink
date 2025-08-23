@@ -85,9 +85,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const dataToEncode = { title: title, tabs: selectedTabsData };
         const jsonString = JSON.stringify(dataToEncode);
-        const encodedData = btoa(jsonString);
-        // const viewerUrl = chrome.runtime.getURL('viewer.html');
-        const viewerUrl = `https://linkleaf.netlify.app/`;
+
+        // --- FIX: Robustly encode the string to handle special characters ---
+        // This prevents errors with certain page titles or URLs.
+        const encodedData = btoa(encodeURIComponent(jsonString));
+        
+        // --- IMPORTANT: Make sure your viewer.html is hosted online ---
+        const viewerUrl = 'https://linkleaf.netlify.app/'; 
+
         const finalUrl = `${viewerUrl}#${encodedData}`;
 
         linkOutput.value = finalUrl;
