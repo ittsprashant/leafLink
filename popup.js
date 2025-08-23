@@ -14,6 +14,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const createIcon = document.getElementById('createIcon');
     const copiedIcon = document.getElementById('copiedIcon');
 
+    // --- NEW: Function to enable/disable the create button ---
+    function updateButtonState() {
+        const checkedCount = document.querySelectorAll('.tab-checkbox:checked').length;
+        if (checkedCount === 0) {
+            createLinkBtn.disabled = true;
+        } else {
+            createLinkBtn.disabled = false;
+        }
+    }
+
     // --- NEW: Function to update the main checkbox based on children ---
     function updateSelectAllCheckboxState() {
         const allTabCheckboxes = document.querySelectorAll('.tab-checkbox');
@@ -34,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             tabElement.dataset.url = tab.url;
             tabElement.dataset.favIconUrl = tab.favIconUrl || '';
 
-            const fallbackIcon = '[https://placehold.co/16x16/f1f5f9/64748b?text=L](https://placehold.co/16x16/f1f5f9/64748b?text=L)';
+            const fallbackIcon = 'https://placehold.co/16x16/f1f5f9/64748b?text=L';
 
             tabElement.innerHTML = `
                 <input type="checkbox" id="tab-${tab.id}" class="tab-checkbox" checked>
@@ -53,12 +63,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     selectAllCheckbox.addEventListener('change', () => {
         const isChecked = selectAllCheckbox.checked;
         document.querySelectorAll('.tab-checkbox').forEach(checkbox => checkbox.checked = isChecked);
+        updateButtonState();
     });
 
     // --- NEW: Delegated event listener for individual tab checkboxes ---
     tabListContainer.addEventListener('change', (event) => {
         if (event.target.classList.contains('tab-checkbox')) {
             updateSelectAllCheckboxState();
+            updateButtonState();
         }
     });
 

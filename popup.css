@@ -163,6 +163,14 @@ h1 {
 .button-primary svg {
     margin-right: 8px;
 }
+/* --- NEW: Style for the disabled button --- */
+.button-primary:disabled {
+    background-color: #9ca3af; /* A neutral grey color */
+    cursor: not-allowed;
+}
+.button-primary:disabled:hover {
+    background-color: #9ca3af; /* Keep the same color on hover */
+}
 
 .result-container {
     width: 100%;
